@@ -1,18 +1,19 @@
-package main
+package wattsup
 
 import (
 	"bufio"
 	"log"
 	"os"
-	"watts-up-go/meter"
 )
 
 func main() {
 	port := "ttyUSB0"
 	command := []string{"./wattsup", port, "-g", "watts"}
 	filename := "out.watts"
-	m := meter.New(port, filename, command)
-	m.Start()
+	m := Wattsup{}
+	if err := m.Init(port, filename, command); err != nil {
+		m.Start()
+	}
 
 	input := bufio.NewScanner(os.Stdin)
 	for input.Scan() {

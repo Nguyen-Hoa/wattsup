@@ -1,4 +1,4 @@
-package meter
+package wattsup
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-type Meter struct {
+type Wattsup struct {
 	port    string
 	cmd     []string
 	file    string
@@ -17,22 +17,28 @@ type Meter struct {
 	file_ *os.File
 }
 
-func New(port, file string, cmd []string) (*Meter, error) {
-	m := Meter{}
+func (w *Wattsup) Init(port, file string, cmd []string) error {
 	file_, err := os.Create(file)
 	if err != nil {
-		return &m, errors.New("Failed to open file for watts output")
+		return errors.New("Failed to open file for watts output")
 	}
 
 	cmd_ := exec.Command(cmd[0], cmd[1:]...)
 	cmd_.Stdout = file_
 
-	m = Meter{port, cmd, file, true, cmd_, file_}
-	return &m, nil
+	w.port = port
+	w.cmd = cmd
+	w.file = file
+	w.running = true
+
+	w.cmd_ = cmd_
+	w.file_ = file_
+
+	return nil
 }
 
-func (m *Meter) Start() error {
-	if err := m.cmd_.Start(); err != nil {
+func (w *Wattsup) Start() error {
+	if err := w.cmd_.Start(); err != nil {
 		log.Fatal(err)
 		return errors.New("Failed to start power meter")
 	}
@@ -40,17 +46,17 @@ func (m *Meter) Start() error {
 	return nil
 }
 
-func (m *Meter) Stop() error {
-	if err := m.cmd_.Process.Kill(); err != nil {
+func (w *Wattsup) Stop() error {
+	if err := w.cmd_.Process.Kill(); err != nil {
 		log.Fatal(err)
 		return errors.New("Failed to stop meter")
 	}
-	m.file_.Close()
+	w.file_.Close()
 	return nil
 }
 
-func (m *Meter) Running() bool {
-	if m.running {
+func (w *Wattsup) Running() bool {
+	if w.running {
 		return true
 	} else {
 		return false

@@ -1,3 +1,3 @@
-module watts-up-go
+module wattsup
 
 go 1.17
