@@ -18,8 +18,8 @@ type Wattsup struct {
 }
 
 type WattsupArgs struct {
-	File string
-	Cmd  string
+	File string `json:"filename"`
+	Cmd  string `json:"cmd"`
 }
 
 func New(args WattsupArgs) *Wattsup {
