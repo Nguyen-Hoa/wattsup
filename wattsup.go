@@ -43,6 +43,25 @@ func (w *Wattsup) Init(args WattsupArgs) error {
 	return nil
 }
 
+func New(args WattsupArgs) *Wattsup {
+	file_, err := os.Create(args.file)
+	if err != nil {
+		return nil
+	}
+
+	cmd_ := exec.Command(args.cmd[0], args.cmd[1:]...)
+	cmd_.Stdout = file_
+
+	w := Wattsup{}
+	w.port = args.port
+	w.cmd = args.cmd
+	w.file = args.file
+	w.running = true
+	w.cmd_ = cmd_
+	w.file_ = file_
+	return &w
+}
+
 func (w *Wattsup) Start() error {
 	if err := w.cmd_.Start(); err != nil {
 		log.Fatal(err)
