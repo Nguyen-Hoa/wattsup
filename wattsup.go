@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 type Wattsup struct {
@@ -21,32 +22,14 @@ type WattsupArgs struct {
 	Cmd  string
 }
 
-func (w *Wattsup) Init(args WattsupArgs) error {
-	file_, err := os.Create(args.File)
-	if err != nil {
-		return errors.New("Failed to open file for watts output")
-	}
-
-	cmd_ := exec.Command(args.Cmd)
-	cmd_.Stdout = file_
-
-	w.cmd = args.Cmd
-	w.file = args.File
-	w.running = false
-
-	w.cmd_ = cmd_
-	w.file_ = file_
-
-	return nil
-}
-
 func New(args WattsupArgs) *Wattsup {
 	file_, err := os.Create(args.File)
 	if err != nil {
 		return nil
 	}
 
-	cmd_ := exec.Command(args.Cmd)
+	proc, proc_args := strings.Split(args.Cmd, " ")[0], strings.Split(args.Cmd, " ")[1:]
+	cmd_ := exec.Command(proc, proc_args...)
 	cmd_.Stdout = file_
 
 	w := Wattsup{}
