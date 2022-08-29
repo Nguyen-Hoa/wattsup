@@ -7,10 +7,9 @@ import (
 )
 
 func main() {
-	port := "ttyUSB0"
-	command := []string{"./wattsup", port, "-g", "watts"}
 	filename := "out.watts"
-	args := WattsupArgs{port, filename, command}
+	command := "./wattsup ttyUSB0 -g watts"
+	args := WattsupArgs{filename, command}
 	m := Wattsup{}
 	if err := m.Init(args); err != nil {
 		m.Start()

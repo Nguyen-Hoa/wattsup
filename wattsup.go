@@ -8,8 +8,7 @@ import (
 )
 
 type Wattsup struct {
-	port    string
-	cmd     []string
+	cmd     string
 	file    string
 	running bool
 
@@ -18,9 +17,8 @@ type Wattsup struct {
 }
 
 type WattsupArgs struct {
-	port string
 	file string
-	cmd  []string
+	cmd  string
 }
 
 func (w *Wattsup) Init(args WattsupArgs) error {
@@ -29,10 +27,9 @@ func (w *Wattsup) Init(args WattsupArgs) error {
 		return errors.New("Failed to open file for watts output")
 	}
 
-	cmd_ := exec.Command(args.cmd[0], args.cmd[1:]...)
+	cmd_ := exec.Command(args.cmd)
 	cmd_.Stdout = file_
 
-	w.port = args.port
 	w.cmd = args.cmd
 	w.file = args.file
 	w.running = true
@@ -49,11 +46,10 @@ func New(args WattsupArgs) *Wattsup {
 		return nil
 	}
 
-	cmd_ := exec.Command(args.cmd[0], args.cmd[1:]...)
+	cmd_ := exec.Command(args.cmd)
 	cmd_.Stdout = file_
 
 	w := Wattsup{}
-	w.port = args.port
 	w.cmd = args.cmd
 	w.file = args.file
 	w.running = true
