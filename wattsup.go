@@ -17,18 +17,24 @@ type Wattsup struct {
 	file_ *os.File
 }
 
-func (w *Wattsup) Init(port, file string, cmd []string) error {
-	file_, err := os.Create(file)
+type WattsupArgs struct {
+	port string
+	file string
+	cmd  []string
+}
+
+func (w *Wattsup) Init(args WattsupArgs) error {
+	file_, err := os.Create(args.file)
 	if err != nil {
 		return errors.New("Failed to open file for watts output")
 	}
 
-	cmd_ := exec.Command(cmd[0], cmd[1:]...)
+	cmd_ := exec.Command(args.cmd[0], args.cmd[1:]...)
 	cmd_.Stdout = file_
 
-	w.port = port
-	w.cmd = cmd
-	w.file = file
+	w.port = args.port
+	w.cmd = args.cmd
+	w.file = args.file
 	w.running = true
 
 	w.cmd_ = cmd_
