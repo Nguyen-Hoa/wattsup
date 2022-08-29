@@ -32,7 +32,7 @@ func (w *Wattsup) Init(args WattsupArgs) error {
 
 	w.cmd = args.Cmd
 	w.file = args.File
-	w.running = true
+	w.running = false
 
 	w.cmd_ = cmd_
 	w.file_ = file_
@@ -63,6 +63,7 @@ func (w *Wattsup) Start() error {
 		log.Fatal(err)
 		return errors.New("Failed to start power meter")
 	}
+	w.running = true
 	log.Println("Started meter...")
 	return nil
 }
