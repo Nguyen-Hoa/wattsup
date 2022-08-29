@@ -17,21 +17,21 @@ type Wattsup struct {
 }
 
 type WattsupArgs struct {
-	file string
-	cmd  string
+	File string
+	Cmd  string
 }
 
 func (w *Wattsup) Init(args WattsupArgs) error {
-	file_, err := os.Create(args.file)
+	file_, err := os.Create(args.File)
 	if err != nil {
 		return errors.New("Failed to open file for watts output")
 	}
 
-	cmd_ := exec.Command(args.cmd)
+	cmd_ := exec.Command(args.Cmd)
 	cmd_.Stdout = file_
 
-	w.cmd = args.cmd
-	w.file = args.file
+	w.cmd = args.Cmd
+	w.file = args.File
 	w.running = true
 
 	w.cmd_ = cmd_
@@ -41,17 +41,17 @@ func (w *Wattsup) Init(args WattsupArgs) error {
 }
 
 func New(args WattsupArgs) *Wattsup {
-	file_, err := os.Create(args.file)
+	file_, err := os.Create(args.File)
 	if err != nil {
 		return nil
 	}
 
-	cmd_ := exec.Command(args.cmd)
+	cmd_ := exec.Command(args.Cmd)
 	cmd_.Stdout = file_
 
 	w := Wattsup{}
-	w.cmd = args.cmd
-	w.file = args.file
+	w.cmd = args.Cmd
+	w.file = args.File
 	w.running = true
 	w.cmd_ = cmd_
 	w.file_ = file_
