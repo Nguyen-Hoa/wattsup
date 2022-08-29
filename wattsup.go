@@ -57,6 +57,7 @@ func (w *Wattsup) Stop() error {
 		return errors.New("Failed to stop meter")
 	}
 	w.file_.Close()
+	w.running = false
 	return nil
 }
 
