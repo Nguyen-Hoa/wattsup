@@ -52,7 +52,7 @@ func New(args WattsupArgs) *Wattsup {
 	w := Wattsup{}
 	w.cmd = args.Cmd
 	w.file = args.File
-	w.running = true
+	w.running = false
 	w.cmd_ = cmd_
 	w.file_ = file_
 	return &w
