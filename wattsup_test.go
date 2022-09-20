@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	filename := "out.watts"
+	path := "./"
 	command := "./wattsup ttyUSB0 -g watts"
-	args := WattsupArgs{File: filename, Cmd: command}
+	args := WattsupArgs{Path: path, Cmd: command}
 	m := New(args)
 	if m != nil {
 		m.Start()

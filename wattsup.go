@@ -2,29 +2,36 @@ package wattsup
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+	"time"
 )
 
 type Wattsup struct {
-	cmd     string
-	file    string
-	running bool
+	cmd      string
+	path     string
+	fullpath string
+	running  bool
 
 	cmd_  *exec.Cmd
 	file_ *os.File
 }
 
 type WattsupArgs struct {
-	File string `json:"filename"`
+	Path string `json:"path"`
 	Cmd  string `json:"cmd"`
 }
 
 func New(args WattsupArgs) *Wattsup {
-	file_, err := os.Create(args.File)
+	path := args.Path
+	date := time.Now().Format("2006_01_02-15:04:05")
+	fullPath := fmt.Sprintf("%s/watts-%s.out", path, date)
+	file_, err := os.Create(fullPath)
 	if err != nil {
+		log.Print(err)
 		return nil
 	}
 
@@ -34,7 +41,8 @@ func New(args WattsupArgs) *Wattsup {
 
 	w := Wattsup{}
 	w.cmd = args.Cmd
-	w.file = args.File
+	w.path = args.Path
+	w.fullpath = fullPath
 	w.running = false
 	w.cmd_ = cmd_
 	w.file_ = file_
