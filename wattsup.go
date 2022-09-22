@@ -28,7 +28,7 @@ type WattsupArgs struct {
 func New(args WattsupArgs) *Wattsup {
 	path := args.Path
 	date := time.Now().Format("2006_01_02-15:04:05")
-	fullPath := fmt.Sprintf("%s/watts-%s.out", path, date)
+	fullPath := fmt.Sprintf("./%s/watts-%s.out", path, date)
 	file_, err := os.Create(fullPath)
 	if err != nil {
 		log.Print(err)
