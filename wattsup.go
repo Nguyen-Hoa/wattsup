@@ -13,7 +13,7 @@ import (
 type Wattsup struct {
 	cmd      string
 	path     string
-	fullpath string
+	Fullpath string
 	running  bool
 
 	cmd_  *exec.Cmd
@@ -48,7 +48,7 @@ func New(args WattsupArgs) *Wattsup {
 	w := Wattsup{}
 	w.cmd = args.Cmd
 	w.path = args.Path
-	w.fullpath = fullPath
+	w.Fullpath = fullPath
 	w.running = false
 	w.cmd_ = cmd_
 	w.file_ = file_
