@@ -23,12 +23,19 @@ type Wattsup struct {
 type WattsupArgs struct {
 	Path string `json:"path"`
 	Cmd  string `json:"cmd"`
+	Name string `json:"name"`
 }
 
 func New(args WattsupArgs) *Wattsup {
 	path := args.Path
-	date := time.Now().Format("2006_01_02-15:04:05")
-	fullPath := fmt.Sprintf("%s/watts-%s.out", path, date)
+	name := ""
+	if args.Name != "" {
+		name = args.Name
+	} else {
+		date := time.Now().Format("2006_01_02-15:04:05")
+		name = fmt.Sprintf("%s.watts", date)
+	}
+	fullPath := fmt.Sprintf("./%s/%s.watts", path, name)
 	file_, err := os.Create(fullPath)
 	if err != nil {
 		log.Print(err)
