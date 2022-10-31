@@ -32,8 +32,7 @@ func New(args WattsupArgs) *Wattsup {
 	if args.Name != "" {
 		name = args.Name
 	} else {
-		date := time.Now().Format("2006_01_02-15:04:05")
-		name = fmt.Sprintf("%s.watts", date)
+		name = time.Now().Format("2006_01_02-15:04:05")
 	}
 	fullPath := fmt.Sprintf("./%s/%s.watts", path, name)
 	file_, err := os.Create(fullPath)
